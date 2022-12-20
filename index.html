@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Game: Pixel-Art</title>
+
+    <link rel="stylesheet" href="static/styles/css.css" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,700;1,400&family=Russo+One&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <header>
+      <h1>Game: Pixel-Art</h1>
+    </header>
+    <main class="game-container">
+      <div id="game"></div>
+
+      <div id="game-tools">
+        <div class="game-tool picked" id="draw">
+          <img src="static/img/pencil.png" alt="pencil" class="tool" />
+        </div>
+
+        <div class="game-tool" id="eraser">
+          <img src="static/img/eraser.png" alt="eraser" class="tool" />
+        </div>
+
+        <div class="game-tool" id="color-picker">
+          <img src="static/img/square.png" alt="square" class="tool" />
+        </div>
+
+        <div class="game-tool" id="select"></div>
+      </div>
+    </main>
+    <footer>
+      <p>Copyright &copy; Barco Exequiel 2022</p>
+    </footer>
+
+    <script src="static/scripts/js.js"></script>
+  </body>
+</html>

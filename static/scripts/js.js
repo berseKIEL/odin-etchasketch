@@ -37,6 +37,7 @@ function addEvLisforGame() {
         }
     });
 
+    // Event Listeners for the game
     gamegrid.addEventListener('mousedown', (e) => {
         if (currentMode == 'draw')
             e.target.style.backgroundColor = currentColor;
@@ -51,6 +52,7 @@ function addEvLisforGame() {
 
     window.addEventListener('mouseup', () => { condition = false })
 
+    // Screen Cleaner
     const screenCleaner = document.getElementById('screen-cleaner')
     screenCleaner.addEventListener('click', (e) => {
         if (confirm("Are you sure you want to clear the Screen?")) {
@@ -89,6 +91,7 @@ function getCurrentSize() {
     currentSize = parseInt(selectItem.textContent);
 }
 
+// Get current mode
 function getCurrentMode() {
     const gameTools = document.getElementById('game-tools')
 
@@ -116,6 +119,7 @@ function getCurrentMode() {
     })
 }
 
+// Get current Colors
 function getCurrentColor() {
     const colorPicker = document.getElementById('color-picker');
 
@@ -126,7 +130,7 @@ function getCurrentColor() {
     })
 }
 
-
+// Clear the grid
 function clearGrid(size) {
     if (size == undefined) {
         gamegrid.innerHTML = '';
@@ -139,6 +143,7 @@ function clearGrid(size) {
     }
 }
 
+// Call functions
 getCurrentSize();
 getCurrentMode();
 getCurrentColor();

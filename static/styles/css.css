@@ -80,10 +80,6 @@ video {
   background-color: #ffa500;
 }
 
-.game-tool:hover .tool {
-  filter: invert(62%) sepia(59%) saturate(7447%) hue-rotate(167deg) brightness(103%) contrast(101%);
-}
-
 .game-tool.picked {
   transform: scale(1.2) rotate(-20deg);
 }

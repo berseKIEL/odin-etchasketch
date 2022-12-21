@@ -7,11 +7,11 @@ const gamegrid = document.getElementById('game')
 
 function createGame(size) {
     // Variable for drawing
-    const drawing = false;
+    const clicking = false;
 
-    gamegrid.style.display != 'grid'
     // Create the grid
     gamegrid.style.display = 'grid';
+    gamegrid.classList.add('no-select')
     gamegrid.style.gridTemplateColumns = `repeat(${size},1fr)`;
     gamegrid.style.gridTemplateRows = `repeat(${size},1fr)`;
 
@@ -21,18 +21,25 @@ function createGame(size) {
         gridItem.classList.add('grid-item')
         gamegrid.appendChild(gridItem);
     }
-    addEvLisforGame(drawing);
+    addEvLisforGame(clicking);
 }
 
 
-function addEvLisforGame() {
+function addEvLisforGame(condition) {
     // Click paint the current grid - Using event delegation
-    // gamegrid.addEventListener('mouseover', (e) => {
-    //     if (e.target.className == 'grid-item') {
-    //         e.target.style.backgroundColor = 'black';
-    //     }
-    // });
+    gamegrid.addEventListener('mouseover', (e) => {
+        if (e.target.className == 'grid-item') {
+            if (!condition) return;
+            e.target.style.backgroundColor = 'black';
+        }
+    });
 
+    gamegrid.addEventListener('mousedown', (e) => {
+        condition = true;
+        e.target.style.backgroundColor = 'black';
+    });
+
+    gamegrid.addEventListener('mouseup', () => { condition = false })
 }
 
 
@@ -62,7 +69,7 @@ function getCurrentSize() {
 
 function getCurrentMode() {
     const gameTools = document.getElementById('game-tools')
-    
+
     for (var i = 0; i < gameTools.children.length; i++) {
         if (gameTools.children[i].classList.contains('picked')) {
             if (gameTools.children[i].id == 'draw')

@@ -6,9 +6,6 @@ var currentMode, currentColor, currentSize;
 const gamegrid = document.getElementById('game')
 
 function createGame(size) {
-    // Variable for drawing
-    const clicking = false;
-
     // Create the grid
     gamegrid.style.display = 'grid';
     gamegrid.classList.add('no-select')
@@ -21,25 +18,48 @@ function createGame(size) {
         gridItem.classList.add('grid-item')
         gamegrid.appendChild(gridItem);
     }
-    addEvLisforGame(clicking);
 }
 
 
-function addEvLisforGame(condition) {
+function addEvLisforGame() {
+    var condition = false;
+
     // Click paint the current grid - Using event delegation
     gamegrid.addEventListener('mouseover', (e) => {
         if (e.target.className == 'grid-item') {
             if (!condition) return;
-            e.target.style.backgroundColor = 'black';
+            if (currentMode == 'draw') {
+                e.target.style.backgroundColor = currentColor;
+            }
+            else if (currentMode == 'eraser') {
+                e.target.style.backgroundColor = 'transparent';
+            }
         }
     });
 
     gamegrid.addEventListener('mousedown', (e) => {
+        if (currentMode == 'draw')
+            e.target.style.backgroundColor = currentColor;
+        else if (currentMode == 'eraser') {
+            e.target.style.backgroundColor = 'transparent';
+        }
+    })
+
+    window.addEventListener('mousedown', () => {
         condition = true;
-        e.target.style.backgroundColor = 'black';
     });
 
-    gamegrid.addEventListener('mouseup', () => { condition = false })
+    window.addEventListener('mouseup', () => { condition = false })
+
+    const screenCleaner = document.getElementById('screen-cleaner')
+    screenCleaner.addEventListener('click', (e) => {
+        if (confirm("Are you sure you want to clear the Screen?")) {
+            clearGrid()
+        }
+        else {
+            e.preventDefault();
+        }
+    })
 }
 
 
@@ -55,35 +75,72 @@ function getCurrentSize() {
 
     gameToolSelect.append(selectItem)
 
-    gameToolSelect.addEventListener('click', () => {
-        selectItem.textContent == listSelect[0] ? selectItem.textContent = listSelect[1]
-            : selectItem.textContent == listSelect[1] ? selectItem.textContent = listSelect[2]
-                : selectItem.textContent = listSelect[0];
-        gamegrid.innerHTML = '';
-        currentSize = parseInt(selectItem.textContent);
-        createGame(currentSize);
+    gameToolSelect.addEventListener('click', (e) => {
+        if (confirm('Are you sure you want to change the grid Size? \nYou\'ll lose your draw')) {
+            selectItem.textContent == listSelect[0] ? selectItem.textContent = listSelect[1]
+                : selectItem.textContent == listSelect[1] ? selectItem.textContent = listSelect[2]
+                    : selectItem.textContent = listSelect[0];
+            clearGrid(selectItem.textContent)
+        }
+        else {
+            e.preventDefault();
+        }
     });
     currentSize = parseInt(selectItem.textContent);
 }
 
-
 function getCurrentMode() {
     const gameTools = document.getElementById('game-tools')
 
-    for (var i = 0; i < gameTools.children.length; i++) {
-        if (gameTools.children[i].classList.contains('picked')) {
-            if (gameTools.children[i].id == 'draw')
-                console.log(gameTools.children[i])
-        }
-    }
+    var picked = document.getElementsByClassName('picked')[0];
 
+    currentMode = picked.id;
+
+    gameTools.addEventListener('click', (e) => {
+        if (e.target.classList.contains('tool')) {
+            if (!e.target.parentElement.classList.contains('picked') && (e.target.parentElement.id == 'draw' || e.target.parentElement.id == 'eraser')) {
+                document.getElementsByClassName('picked')[0].classList.remove('picked');
+                e.target.parentElement.classList.add('picked');
+                picked = document.getElementsByClassName('picked')[0];
+                currentMode = picked.id;
+            }
+        }
+        else {
+            if (!e.target.classList.contains('picked') && (e.target.id == 'draw' || e.target.id == 'eraser')) {
+                document.getElementsByClassName('picked')[0].classList.remove('picked');
+                e.target.classList.add('picked');
+                picked = document.getElementsByClassName('picked')[0];
+                currentMode = picked.id;
+            }
+        }
+    })
 }
 
 function getCurrentColor() {
+    const colorPicker = document.getElementById('color-picker');
 
+    currentColor = colorPicker.value;
+
+    colorPicker.addEventListener("input", () => {
+        currentColor = colorPicker.value;
+    })
+}
+
+
+function clearGrid(size) {
+    if (size == undefined) {
+        gamegrid.innerHTML = '';
+        createGame(currentSize);
+    }
+    else {
+        gamegrid.innerHTML = '';
+        currentSize = parseInt(size);
+        createGame(currentSize);
+    }
 }
 
 getCurrentSize();
 getCurrentMode();
 getCurrentColor();
+addEvLisforGame();
 createGame(currentSize);
